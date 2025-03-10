@@ -1,6 +1,6 @@
-package com.vjuliano.parse;
+package com.vjuliano.asciiArt.parse;
 
-import com.vjuliano.response.GenericResponse;
+import com.vjuliano.asciiArt.response.GenericResponse;
 
 import java.io.File;
 import java.util.List;

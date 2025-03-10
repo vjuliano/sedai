@@ -1,7 +1,7 @@
-package com.vjuliano.draw;
+package com.vjuliano.asciiArt.draw;
 
-import com.vjuliano.response.GenericResponse;
-import com.vjuliano.util.Assert;
+import com.vjuliano.asciiArt.response.GenericResponse;
+import com.vjuliano.asciiArt.util.Assert;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;

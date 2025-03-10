@@ -71,7 +71,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        com.vjuliano.Main
+                                        com.vjuliano.asciiArt.Main
                                     </mainClass>
                                 </manifest>
                             </archive>

@@ -1,6 +1,6 @@
-package com.vjuliano.draw;
+package com.vjuliano.asciiArt.draw;
 
-import com.vjuliano.response.GenericResponse;
+import com.vjuliano.asciiArt.response.GenericResponse;
 
 public interface IAsciiDraw {
 

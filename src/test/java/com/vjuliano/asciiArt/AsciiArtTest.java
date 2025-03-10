@@ -1,4 +1,4 @@
-package com.vjuliano.parse;
+package com.vjuliano.asciiArt;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -9,10 +9,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.never;
 
-import com.vjuliano.AsciiArt;
-import com.vjuliano.draw.IAsciiDraw;
-import com.vjuliano.plot.IAsciiPlotter;
-import com.vjuliano.response.GenericResponse;
+import com.vjuliano.asciiArt.draw.IAsciiDraw;
+import com.vjuliano.asciiArt.parse.IFileParser;
+import com.vjuliano.asciiArt.plot.IAsciiPlotter;
+import com.vjuliano.asciiArt.response.GenericResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

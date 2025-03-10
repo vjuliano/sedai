@@ -1,6 +1,6 @@
-package com.vjuliano.response;
+package com.vjuliano.asciiArt.response;
 
-import com.vjuliano.util.Assert;
+import com.vjuliano.asciiArt.util.Assert;
 import lombok.Getter;
 
 @Getter

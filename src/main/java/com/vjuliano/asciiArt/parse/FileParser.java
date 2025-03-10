@@ -1,7 +1,7 @@
-package com.vjuliano.parse;
+package com.vjuliano.asciiArt.parse;
 
-import com.vjuliano.util.Assert;
-import com.vjuliano.response.GenericResponse;
+import com.vjuliano.asciiArt.util.Assert;
+import com.vjuliano.asciiArt.response.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
 import java.io.BufferedReader;
 import java.io.File;

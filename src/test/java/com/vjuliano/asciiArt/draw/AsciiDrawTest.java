@@ -1,11 +1,10 @@
-package com.vjuliano.parse;
+package com.vjuliano.asciiArt.draw;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.vjuliano.draw.AsciiDraw;
-import com.vjuliano.response.GenericResponse;
+import com.vjuliano.asciiArt.response.GenericResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

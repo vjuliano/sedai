@@ -1,14 +1,13 @@
-package com.vjuliano;
+package com.vjuliano.asciiArt;
 
-import com.vjuliano.draw.AsciiDraw;
-import com.vjuliano.parse.FileParser;
-import com.vjuliano.plot.AsciiPlotter;
-import com.vjuliano.response.GenericResponse;
-import com.vjuliano.util.Assert;
+import com.vjuliano.asciiArt.draw.AsciiDraw;
+import com.vjuliano.asciiArt.parse.FileParser;
+import com.vjuliano.asciiArt.plot.AsciiPlotter;
+import com.vjuliano.asciiArt.response.GenericResponse;
+import com.vjuliano.asciiArt.util.Assert;
 import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 

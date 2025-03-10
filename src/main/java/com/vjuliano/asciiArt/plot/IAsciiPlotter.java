@@ -1,6 +1,6 @@
-package com.vjuliano.plot;
+package com.vjuliano.asciiArt.plot;
 
-import com.vjuliano.response.GenericResponse;
+import com.vjuliano.asciiArt.response.GenericResponse;
 
 import java.util.List;
 

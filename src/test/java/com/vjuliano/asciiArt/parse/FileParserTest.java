@@ -1,4 +1,4 @@
-package com.vjuliano.parse;
+package com.vjuliano.asciiArt.parse;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,10 +1,10 @@
-package com.vjuliano;
+package com.vjuliano.asciiArt;
 
-import com.vjuliano.draw.IAsciiDraw;
-import com.vjuliano.parse.IFileParser;
-import com.vjuliano.plot.IAsciiPlotter;
-import com.vjuliano.response.GenericResponse;
-import com.vjuliano.util.Assert;
+import com.vjuliano.asciiArt.draw.IAsciiDraw;
+import com.vjuliano.asciiArt.parse.IFileParser;
+import com.vjuliano.asciiArt.plot.IAsciiPlotter;
+import com.vjuliano.asciiArt.response.GenericResponse;
+import com.vjuliano.asciiArt.util.Assert;
 import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.util.List;

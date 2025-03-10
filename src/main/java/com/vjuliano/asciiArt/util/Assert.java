@@ -1,4 +1,4 @@
-package com.vjuliano.util;
+package com.vjuliano.asciiArt.util;
 
 public class Assert {
 
