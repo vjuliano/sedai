@@ -13,6 +13,11 @@ import java.util.Scanner;
 @Slf4j
 public class FileParser implements IFileParser {
 
+    private static final String DELIMITER = ",";
+    private static final int NUM_COLS = 4;
+    private static final int X_COL = 2;
+    private static final int Y_COL = 3;
+
     @Override
     public GenericResponse<List<List<Boolean>>> parse(File inputFile, int scale) {
         try {
@@ -67,11 +72,11 @@ public class FileParser implements IFileParser {
             double y;
 
             String line = fileScanner.nextLine();
-            String[] elms = line.split(",");
-            Assert.isTrue(elms.length == 4, "Invalid row format.  Size: " + elms.length);
+            String[] elms = line.split(DELIMITER);
+            Assert.isTrue(elms.length == NUM_COLS, "Invalid row format.  Size: " + elms.length);
 
-            x = Double.parseDouble(elms[2]);
-            y = Double.parseDouble(elms[3]);
+            x = Double.parseDouble(elms[X_COL]);
+            y = Double.parseDouble(elms[Y_COL]);
 
             //filter invalid rows
             if (x == 0d || y == 0d) {
@@ -96,32 +101,6 @@ public class FileParser implements IFileParser {
         return new MinMaxCoords(minX, maxX, minY, maxY);
     }
 
-
-    private void populateMatrix(double xscale, double yscale, Offsets offsets,
-                                File inputFile, List<List<Boolean>> matrix) throws FileNotFoundException {
-        final Scanner fileScanner = new Scanner(inputFile);
-
-        if (fileScanner.hasNextLine()) {
-            fileScanner.nextLine();
-        }
-
-        while (fileScanner.hasNextLine()) {
-            String[] elms = fileScanner.nextLine().split(",");
-            double x = Double.parseDouble(elms[2]);
-            double y = Double.parseDouble(elms[3]);
-
-            //filter invalid rows
-            if (x == 0d || y == 0d) {
-                continue;
-            }
-
-            x += offsets.xOffset;
-            y += offsets.yOffset;
-
-            matrix.get((int)(y / yscale)).set((int)(x / xscale), true);
-        }
-    }
-
     private Offsets getOffsets(double minX, double minY) {
         //adjust to shift min coords to 0
         double xOffset;
@@ -141,7 +120,30 @@ public class FileParser implements IFileParser {
         return new Offsets(xOffset, yOffset);
     }
 
+    private void populateMatrix(double xscale, double yscale, Offsets offsets,
+                                File inputFile, List<List<Boolean>> matrix) throws FileNotFoundException {
+        final Scanner fileScanner = new Scanner(inputFile);
 
+        if (fileScanner.hasNextLine()) {
+            fileScanner.nextLine();
+        }
+
+        while (fileScanner.hasNextLine()) {
+            String[] elms = fileScanner.nextLine().split(DELIMITER);
+            double x = Double.parseDouble(elms[X_COL]);
+            double y = Double.parseDouble(elms[Y_COL]);
+
+            //filter invalid rows
+            if (x == 0d || y == 0d) {
+                continue;
+            }
+
+            x += offsets.xOffset;
+            y += offsets.yOffset;
+
+            matrix.get((int)(y / yscale)).set((int)(x / xscale), true);
+        }
+    }
 
     private record MinMaxCoords(double minX, double maxX, double minY, double maxY){}
 

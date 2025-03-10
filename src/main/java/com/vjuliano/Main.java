@@ -1,43 +1,39 @@
 package com.vjuliano;
 
 import com.vjuliano.draw.AsciiDraw;
-import com.vjuliano.draw.IAsciiDraw;
 import com.vjuliano.parse.FileParser;
-import com.vjuliano.parse.IFileParser;
+import com.vjuliano.plot.AsciiPlotter;
 import com.vjuliano.response.GenericResponse;
 import com.vjuliano.util.Assert;
 import lombok.extern.slf4j.Slf4j;
 import java.io.File;
-import java.util.List;
 import java.util.Scanner;
 
 @Slf4j
 public class Main {
 
-    private static final String DEFAULT_FILE_PATH = "./ukpostcodes.csv";
+    private static final String DEFAULT_FILE_PATH = "../ukpostcodes.csv";
     private static final String DEFAULT_PIXEL_CHAR = "#";
     private static final int DEFAULT_SCALE = 50;
 
     public static void main(String[] args) {
         try {
-            final Scanner keyboardScanner = new Scanner(System.in);
-            final IFileParser fileParser = new FileParser();
-            final IAsciiDraw asciiDraw = new AsciiDraw();
-            final File inputFile = getInputFile(keyboardScanner);
-            final int scale = getScale(keyboardScanner);
-            final String pixelChar = getPixelChar(keyboardScanner);
-            final String outputFilePath = getOutputFilePath(keyboardScanner);
+            Scanner keyboardScanner = new Scanner(System.in);
+            File inputFile = getInputFile(keyboardScanner);
+            int scale = getScale(keyboardScanner);
+            String pixelChar = getPixelChar(keyboardScanner);
+            String outputFilePath = getOutputFilePath(keyboardScanner);
 
-            final GenericResponse<List<List<Boolean>>> parseResponse = fileParser.parse(inputFile, scale);
-            Assert.isTrue(parseResponse.isSuccess(),
-                    parseResponse.isSuccess() ? "" : "Failed to parse input file: " + parseResponse.getErrorMsg());
-
-            final GenericResponse<Boolean> drawResponse = asciiDraw.draw(scale, pixelChar, parseResponse.getValue());
-            Assert.isTrue(drawResponse.isSuccess(), drawResponse.isSuccess() ? "" : drawResponse.getErrorMsg());
+            GenericResponse<Boolean> result =
+                    new AsciiArt(inputFile, outputFilePath, scale, pixelChar,
+                            new FileParser(), new AsciiDraw(), new AsciiPlotter())
+                            .create();
+            Assert.isTrue(result.isSuccess(), result.isSuccess() ? "" : result.getErrorMsg());
         } catch (Exception ex) {
             log.error("Error initializing program", ex);
             System.exit(1);
         }
+        System.exit(0);
     }
 
     private static File getInputFile(Scanner keyboardScanner) {

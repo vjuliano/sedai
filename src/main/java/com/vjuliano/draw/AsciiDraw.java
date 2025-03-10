@@ -1,35 +1,34 @@
 package com.vjuliano.draw;
 
 import com.vjuliano.response.GenericResponse;
+import com.vjuliano.util.Assert;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
+import java.io.File;
+import java.io.FileWriter;
 
 @Slf4j
 public class AsciiDraw implements IAsciiDraw {
 
-    private static final String LIGHT_PIXEL = " ";
-
     @Override
-    public GenericResponse<Boolean> draw(int scale, String pixelChar, List<List<Boolean>> matrix) {
+    public GenericResponse<Boolean> draw(String plot, String outputPath) {
         try {
-            for (int y = scale; y >= 0; y--) {
-                for (int x = 0; x < scale; x++) {
-                    boolean posVal = matrix.get(x).get(y);
-                    if (posVal) {
-                        System.out.print(pixelChar);
-                    } else {
-                        System.out.print(LIGHT_PIXEL);
-                    }
+            if (outputPath.isBlank()) {
+                System.out.println(plot);
+            } else {
+                File file = new File(outputPath);
+                Assert.isTrue(file.createNewFile(), "File already exists");
+
+                try (FileWriter fw = new FileWriter(file)) {
+                    fw.write(plot);
                 }
-                System.out.println();
             }
+
             return GenericResponse.success(true);
         } catch (Exception ex) {
-            log.error("Error drawing ascii.", ex);
+            log.error("Error drawing ASCII art", ex);
             return GenericResponse.failure(ex.getMessage());
         }
 
     }
-
 }
