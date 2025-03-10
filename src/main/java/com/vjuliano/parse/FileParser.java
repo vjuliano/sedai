@@ -3,12 +3,12 @@ package com.vjuliano.parse;
 import com.vjuliano.util.Assert;
 import com.vjuliano.response.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
-
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 @Slf4j
 public class FileParser implements IFileParser {
@@ -54,51 +54,49 @@ public class FileParser implements IFileParser {
         return matrix;
     }
 
-    private MinMaxCoords getMinMaxCoords(File inputFile) throws FileNotFoundException {
-        final Scanner fileScanner = new Scanner(inputFile);
+    private MinMaxCoords getMinMaxCoords(File inputFile) throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
+            double maxX = Double.MIN_VALUE;
+            double minX = Double.MAX_VALUE;
+            double maxY = Double.MIN_VALUE;
+            double minY = Double.MAX_VALUE;
 
-        double maxX = Double.MIN_VALUE;
-        double minX = Double.MAX_VALUE;
-        double maxY = Double.MIN_VALUE;
-        double minY = Double.MAX_VALUE;
+            //skip over first line
+            br.readLine();
 
-        //skip over first line
-        if (fileScanner.hasNextLine()) {
-            fileScanner.nextLine();
+            String line;
+            while((line = br.readLine()) != null) {
+                double x;
+                double y;
+
+                String[] elms = line.split(DELIMITER);
+                Assert.isTrue(elms.length == NUM_COLS, "Invalid row format.  Size: " + elms.length);
+
+                x = Double.parseDouble(elms[X_COL]);
+                y = Double.parseDouble(elms[Y_COL]);
+
+                //filter invalid rows
+                if (x == 0d || y == 0d) {
+                    continue;
+                }
+
+                if (x < minX) {
+                    minX = x;
+                }
+                if (x > maxX) {
+                    maxX = x;
+                }
+
+                if (y < minY) {
+                    minY = y;
+                }
+                if (y > maxY) {
+                    maxY = y;
+                }
+            }
+
+            return new MinMaxCoords(minX, maxX, minY, maxY);
         }
-
-        while(fileScanner.hasNextLine()) {
-            double x;
-            double y;
-
-            String line = fileScanner.nextLine();
-            String[] elms = line.split(DELIMITER);
-            Assert.isTrue(elms.length == NUM_COLS, "Invalid row format.  Size: " + elms.length);
-
-            x = Double.parseDouble(elms[X_COL]);
-            y = Double.parseDouble(elms[Y_COL]);
-
-            //filter invalid rows
-            if (x == 0d || y == 0d) {
-                continue;
-            }
-
-            if (x < minX) {
-                minX = x;
-            }
-            if (x > maxX) {
-                maxX = x;
-            }
-
-            if (y < minY) {
-                minY = y;
-            }
-            if (y > maxY) {
-                maxY = y;
-            }
-        }
-
-        return new MinMaxCoords(minX, maxX, minY, maxY);
     }
 
     private Offsets getOffsets(double minX, double minY) {
@@ -121,27 +119,27 @@ public class FileParser implements IFileParser {
     }
 
     private void populateMatrix(double xscale, double yscale, Offsets offsets,
-                                File inputFile, List<List<Boolean>> matrix) throws FileNotFoundException {
-        final Scanner fileScanner = new Scanner(inputFile);
+                                File inputFile, List<List<Boolean>> matrix) throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
+            //skip first line
+            br.readLine();
 
-        if (fileScanner.hasNextLine()) {
-            fileScanner.nextLine();
-        }
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] elms = line.split(DELIMITER);
+                double x = Double.parseDouble(elms[X_COL]);
+                double y = Double.parseDouble(elms[Y_COL]);
 
-        while (fileScanner.hasNextLine()) {
-            String[] elms = fileScanner.nextLine().split(DELIMITER);
-            double x = Double.parseDouble(elms[X_COL]);
-            double y = Double.parseDouble(elms[Y_COL]);
+                //filter invalid rows
+                if (x == 0d || y == 0d) {
+                    continue;
+                }
 
-            //filter invalid rows
-            if (x == 0d || y == 0d) {
-                continue;
+                x += offsets.xOffset;
+                y += offsets.yOffset;
+
+                matrix.get((int)(y / yscale)).set((int)(x / xscale), true);
             }
-
-            x += offsets.xOffset;
-            y += offsets.yOffset;
-
-            matrix.get((int)(y / yscale)).set((int)(x / xscale), true);
         }
     }
 

@@ -7,6 +7,9 @@ import com.vjuliano.response.GenericResponse;
 import com.vjuliano.util.Assert;
 import lombok.extern.slf4j.Slf4j;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 @Slf4j
@@ -28,7 +31,8 @@ public class Main {
                     new AsciiArt(inputFile, outputFilePath, scale, pixelChar,
                             new FileParser(), new AsciiDraw(), new AsciiPlotter())
                             .create();
-            Assert.isTrue(result.isSuccess(), result.isSuccess() ? "" : result.getErrorMsg());
+            Assert.isTrue(result.isSuccess(),
+                    result.isSuccess() ? "" : "AsciiArt failed: " + result.getErrorMsg());
         } catch (Exception ex) {
             log.error("Error initializing program", ex);
             System.exit(1);
@@ -44,10 +48,10 @@ public class Main {
         if (inputPath.isBlank()) {
             inputPath = DEFAULT_FILE_PATH;
         }
-        final File inputFile = new File(inputPath);
-        Assert.isTrue(inputFile.isFile(), "Invalid path: " + inputPath);
 
-        return inputFile;
+        Assert.isTrue(Files.exists(Paths.get(inputPath)), "Invalid path: " + inputPath);
+
+        return new File(inputPath);
     }
 
     private static int getScale(Scanner keyboardScanner) {

@@ -40,10 +40,12 @@ public class AsciiArt {
                     parseResponse.isSuccess() ? "" : "Failed to parse input file: " + parseResponse.getErrorMsg());
 
             GenericResponse<String> plotResponse = asciiPlotter.plot(scale, pixelChar, parseResponse.getValue());
-            Assert.isTrue(plotResponse.isSuccess(), plotResponse.isSuccess() ? "" : plotResponse.getErrorMsg());
+            Assert.isTrue(plotResponse.isSuccess(),
+                    plotResponse.isSuccess() ? "" : "Failed to plot: " + plotResponse.getErrorMsg());
 
             GenericResponse<Boolean> drawResponse = asciiDraw.draw(plotResponse.getValue(), outputFilePath);
-            Assert.isTrue(drawResponse.isSuccess(), drawResponse.isSuccess() ? "" : drawResponse.getErrorMsg());
+            Assert.isTrue(drawResponse.isSuccess(),
+                    drawResponse.isSuccess() ? "" : "Failed to draw: " + drawResponse.getErrorMsg());
 
             return GenericResponse.success(true);
         } catch (Exception ex) {
