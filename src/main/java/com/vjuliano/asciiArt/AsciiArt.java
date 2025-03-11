@@ -12,14 +12,14 @@ import java.util.List;
 @Slf4j
 public class AsciiArt {
 
-    private IFileParser fileParser;
-    private IAsciiPlotter asciiPlotter;
-    private IAsciiDraw asciiDraw;
+    private final IFileParser fileParser;
+    private final IAsciiPlotter asciiPlotter;
+    private final IAsciiDraw asciiDraw;
 
-    private File inputFile;
-    private String outputFilePath;
-    private int scale;
-    private String pixelChar;
+    private final File inputFile;
+    private final String outputFilePath;
+    private final int scale;
+    private final String pixelChar;
 
     public AsciiArt(File inputFile, String outputFilePath, int scale, String pixelChar,
                     IFileParser fileParser, IAsciiDraw asciiDraw, IAsciiPlotter asciiPlotter) {

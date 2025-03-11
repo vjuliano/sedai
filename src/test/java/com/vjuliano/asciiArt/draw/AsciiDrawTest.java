@@ -1,23 +1,23 @@
 package com.vjuliano.asciiArt.draw;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.vjuliano.asciiArt.response.GenericResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class AsciiDrawTest {
     private static final String TEST_FILE_PATH = "testDraw.csv";
+    private static final String PLOT_STR = "plotStr";
 
-    private AsciiDraw asciiDraw = new AsciiDraw();
+    private final AsciiDraw asciiDraw = new AsciiDraw();
 
     @BeforeEach
     public void before() {
@@ -26,10 +26,8 @@ public class AsciiDrawTest {
     }
 
     @Test
-    public void testDraw() throws FileNotFoundException, IOException {
-        String plot = "plotString";
-
-        GenericResponse<Boolean> result = asciiDraw.draw(plot, TEST_FILE_PATH);
+    public void testDraw() throws IOException {
+        GenericResponse<Boolean> result = asciiDraw.draw(PLOT_STR, TEST_FILE_PATH);
         assertTrue(result.isSuccess());
 
         File file = new File(TEST_FILE_PATH);
@@ -37,17 +35,18 @@ public class AsciiDrawTest {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line = br.readLine();
             assertNotNull(line);
-            assertEquals(plot, line);
+            assertEquals(PLOT_STR, line);
         }
     }
 
     @Test
-    public void testDraw_outputPathBlank() {
+    public void testDraw_fileExists() throws IOException {
+        File file = new File(TEST_FILE_PATH);
+        file.createNewFile();
 
-    }
+        GenericResponse<Boolean> result = asciiDraw.draw(PLOT_STR, TEST_FILE_PATH);
 
-    @Test
-    public void testDraw_fileExists() {
-
+        assertFalse(result.isSuccess());
+        assertTrue(result.getErrorMsg().contains("File already exists"));
     }
 }
